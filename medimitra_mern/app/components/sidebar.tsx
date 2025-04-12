@@ -3,12 +3,29 @@ import React from 'react';
 import { useState } from 'react';
 import { Calendar, Users, User, Settings, LogOut, Home, Menu, X } from 'lucide-react';
 
-export default function DoctorSidebar() {
+interface DoctorSidebarProps {
+  onItemSelect?: (itemId: string) => void;
+  onLogout?: () => void;
+  defaultActiveItem?: string;
+}
+
+const DoctorSidebar: React.FC<DoctorSidebarProps> = ({
+  onItemSelect,
+  onLogout,
+  defaultActiveItem = 'dashboard',
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState('dashboard');
+  const [activeItem, setActiveItem] = useState(defaultActiveItem);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleItemClick = (itemId: string) => {
+    setActiveItem(itemId);
+    if (onItemSelect) {
+      onItemSelect(itemId);
+    }
   };
 
   const menuItems = [
@@ -44,7 +61,7 @@ export default function DoctorSidebar() {
           {menuItems.map((item) => (
             <li key={item.id}>
               <button
-                onClick={() => setActiveItem(item.id)}
+                onClick={() => handleItemClick(item.id)}
                 className={`flex items-center p-3 rounded-lg w-full transition-all duration-200 ${
                   activeItem === item.id
                     ? 'bg-white text-blue-700 font-medium shadow-md'
@@ -61,11 +78,16 @@ export default function DoctorSidebar() {
 
       {/* Logout Button */}
       <div className="p-4 border-t border-blue-800">
-        <button className="flex items-center p-3 rounded-lg text-white hover:bg-blue-600 transition-colors w-full">
+        <button
+          onClick={onLogout}
+          className="flex items-center p-3 rounded-lg text-white hover:bg-blue-600 transition-colors w-full"
+        >
           <LogOut size={20} className={isCollapsed ? 'mx-auto' : 'mr-3'} />
           {!isCollapsed && <span>Logout</span>}
         </button>
       </div>
     </div>
   );
-}
+};
+
+export default DoctorSidebar;

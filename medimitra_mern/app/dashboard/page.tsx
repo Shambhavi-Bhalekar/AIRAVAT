@@ -153,7 +153,7 @@ export default function PatientDashboard() {
           return (
             <li 
               key={med.id} 
-              className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-300 ${
+              className={`flex items-center justify-between rounded-xl border transition-all duration-300 ${
                 med.taken 
                   ? 'border-green-200 bg-green-50 shadow-sm' 
                   : isOverdue 
