@@ -2,6 +2,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, Check, X, AlertCircle, Coffee, Sun, Sunset, Moon, Activity, Heart, User, Award, Apple } from 'lucide-react';
+import PatientSidebar from '../components/sidebar_patient';
 
 interface Appointment {
   id: number;
@@ -36,7 +37,6 @@ interface MedicationSectionProps {
 export default function PatientDashboard() {
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const patientName = "Alex Johnson";
-  const patientAvatar = "/api/placeholder/150/150";
   
   // Effect to update current time every minute
   useEffect(() => {
@@ -197,261 +197,269 @@ export default function PatientDashboard() {
   );
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen">
-      <div className="max-w-6xl mx-auto p-6">
-        {/* Header */}
-        <div className="mb-8 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl shadow-lg p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Hi, {patientName}</h1>
-              <p className="mt-1 text-indigo-100">
-                {currentTime.toLocaleDateString('en-US', { 
-                  weekday: 'long', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-              </p>
-              <div className="mt-4 bg-white bg-opacity-20 rounded-lg px-4 py-2 inline-block">
-                <div className="flex items-center">
-                  <Activity className="mr-2" />
-                  <span>Daily progress: {calculateCompletionRate()}% complete</span>
+    <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Sidebar - Fixed on the left */}
+      <div className="w-64 bg-white shadow-lg fixed top-0 left-0 h-full z-10">
+        <PatientSidebar />
+      </div>
+
+      {/* Main Content - Pushed to the right */}
+      <div className="flex-1 ml-64 p-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="mb-8 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl shadow-lg p-6 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold">Hi, {patientName}</h1>
+                <p className="mt-1 text-indigo-100">
+                  {currentTime.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
+                </p>
+                <div className="mt-4 bg-white bg-opacity-20 rounded-lg px-4 py-2 inline-block">
+                  <div className="flex items-center">
+                    <Activity className="mr-2" />
+                    <span>Daily progress: {calculateCompletionRate()}% complete</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="hidden md:block">
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-indigo-600 font-bold text-xl shadow-md">
-                AJ
+              <div className="hidden md:block">
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-indigo-600 font-bold text-xl shadow-md">
+                  AJ
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column */}
-          <div className="lg:col-span-2">
-            {/* Medication Tracker */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-indigo-100">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-800">Today's Medication</h2>
-                <div className="text-sm bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full font-medium">
-                  {calculateCompletionRate()}% Complete
-                </div>
-              </div>
-              
-              <MedicationSection 
-                title="Morning" 
-                icon={Coffee} 
-                timeOfDay="morning" 
-                medications={meds.morning} 
-              />
-              
-              <MedicationSection 
-                title="Afternoon" 
-                icon={Sun} 
-                timeOfDay="afternoon" 
-                medications={meds.afternoon} 
-              />
-              
-              <MedicationSection 
-                title="Evening" 
-                icon={Sunset} 
-                timeOfDay="evening" 
-                medications={meds.evening} 
-              />
-              
-              <MedicationSection 
-                title="Night" 
-                icon={Moon} 
-                timeOfDay="night" 
-                medications={meds.night} 
-              />
-            </div>
-
-            {/* Diet & Health Recommendations */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-indigo-100">
-              <h2 className="text-xl font-bold text-gray-800 mb-6">Personalized Recommendations</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                      <Apple size={20} className="text-blue-600" />
-                    </div>
-                    <h3 className="font-medium text-lg text-gray-800">Diet Plan</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column */}
+            <div className="lg:col-span-2">
+              {/* Medication Tracker */}
+              <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-indigo-100">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold text-gray-800">Today's Medication</h2>
+                  <div className="text-sm bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full font-medium">
+                    {calculateCompletionRate()}% Complete
                   </div>
-                  <ul className="space-y-3">
-                    {dietRecommendations.map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="mt-1 mr-3 w-5 h-5 bg-blue-200 rounded-full flex items-center justify-center text-blue-700">
-                          <Check size={12} />
-                        </div>
-                        <span className="text-gray-700">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
                 
-                <div className="bg-violet-50 rounded-xl p-5 border border-violet-100">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center mr-3">
-                      <Heart size={20} className="text-violet-600" />
-                    </div>
-                    <h3 className="font-medium text-lg text-gray-800">Health Measures</h3>
-                  </div>
-                  <ul className="space-y-3">
-                    {healthRecommendations.map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="mt-1 mr-3 w-5 h-5 bg-violet-200 rounded-full flex items-center justify-center text-violet-700">
-                          <Check size={12} />
-                        </div>
-                        <span className="text-gray-700">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <MedicationSection 
+                  title="Morning" 
+                  icon={Coffee} 
+                  timeOfDay="morning" 
+                  medications={meds.morning} 
+                />
+                
+                <MedicationSection 
+                  title="Afternoon" 
+                  icon={Sun} 
+                  timeOfDay="afternoon" 
+                  medications={meds.afternoon} 
+                />
+                
+                <MedicationSection 
+                  title="Evening" 
+                  icon={Sunset} 
+                  timeOfDay="evening" 
+                  medications={meds.evening} 
+                />
+                
+                <MedicationSection 
+                  title="Night" 
+                  icon={Moon} 
+                  timeOfDay="night" 
+                  medications={meds.night} 
+                />
               </div>
-            </div>
-          </div>
 
-          {/* Right Column */}
-          <div>
-            {/* Progress Summary */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-indigo-100">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Your Progress</h2>
-              <div className="mb-6">
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Medication adherence</span>
-                  <span className="font-medium">{calculateCompletionRate()}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div 
-                    className="bg-gradient-to-r from-indigo-500 to-violet-500 h-2.5 rounded-full" 
-                    style={{ width: `${calculateCompletionRate()}%` }}
-                  ></div>
-                </div>
-              </div>
-              <div className="mb-6">
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Diet plan compliance</span>
-                  <span className="font-medium">80%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full" 
-                    style={{ width: '80%' }}
-                  ></div>
-                </div>
-              </div>
-              <div className="mb-6">
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Exercise goals</span>
-                  <span className="font-medium">65%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div 
-                    className="bg-gradient-to-r from-violet-500 to-purple-600 h-2.5 rounded-full" 
-                    style={{ width: '65%' }}
-                  ></div>
-                </div>
-              </div>
-              <div className="text-center mt-4">
-                <div className="inline-flex items-center text-indigo-600">
-                  <Award size={16} className="mr-1" />
-                  <span className="font-medium">3-day streak!</span>
+              {/* Diet & Health Recommendations */}
+              <div className="bg-white rounded-2xl shadow-lg p-6 border border-indigo-100">
+                <h2 className="text-xl font-bold text-gray-800 mb-6">Personalized Recommendations</h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                    <div className="flex items-center mb-4">
+                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                        <Apple size={20} className="text-blue-600" />
+                      </div>
+                      <h3 className="font-medium text-lg text-gray-800">Diet Plan</h3>
+                    </div>
+                    <ul className="space-y-3">
+                      {dietRecommendations.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <div className="mt-1 mr-3 w-5 h-5 bg-blue-200 rounded-full flex items-center justify-center text-blue-700">
+                            <Check size={12} />
+                          </div>
+                          <span className="text-gray-700">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-violet-50 rounded-xl p-5 border border-violet-100">
+                    <div className="flex items-center mb-4">
+                      <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center mr-3">
+                        <Heart size={20} className="text-violet-600" />
+                      </div>
+                      <h3 className="font-medium text-lg text-gray-800">Health Measures</h3>
+                    </div>
+                    <ul className="space-y-3">
+                      {healthRecommendations.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <div className="mt-1 mr-3 w-5 h-5 bg-violet-200 rounded-full flex items-center justify-center text-violet-700">
+                            <Check size={12} />
+                          </div>
+                          <span className="text-gray-700">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-            
-            {/* Upcoming Appointments */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-indigo-100">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Upcoming Appointments</h2>
-              
-              {appointments.length > 0 ? (
-                <div className="space-y-4">
-                  {appointments.map(appointment => (
+
+            {/* Right Column */}
+            <div>
+              {/* Progress Summary */}
+              <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-indigo-100">
+                <h2 className="text-xl font-bold text-gray-800 mb-4">Your Progress</h2>
+                <div className="mb-6">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-gray-600">Medication adherence</span>
+                    <span className="font-medium">{calculateCompletionRate()}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div 
-                      key={appointment.id} 
-                      className="border border-gray-200 rounded-xl p-4 hover:border-indigo-300 hover:shadow-md transition-all duration-300"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-medium text-gray-800">{appointment.doctor}</h3>
-                          <p className="text-sm text-gray-500">{appointment.specialty}</p>
-                        </div>
-                        <div className="bg-indigo-100 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full">
-                          Upcoming
-                        </div>
-                      </div>
-                      <div className="mt-3 flex items-center text-gray-600">
-                        <div className="flex items-center mr-4">
-                          <Calendar size={14} className="mr-1" />
-                          <span className="text-sm">{appointment.date}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Clock size={14} className="mr-1" />
-                          <span className="text-sm">{appointment.time}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500">No upcoming appointments.</p>
-              )}
-              
-              <button className="mt-4 w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-3 px-4 rounded-xl transition-colors font-medium flex items-center justify-center">
-                <Calendar size={18} className="mr-2" />
-                Schedule New Appointment
-              </button>
-            </div>
-            
-            {/* Health Stats Summary */}
-            <div className="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-2xl shadow-lg p-6 text-white">
-              <h2 className="text-xl font-bold mb-4">Health Summary</h2>
-              
-              <div className="space-y-4">
-                <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
-                      <Activity size={16} className="text-white" />
-                    </div>
-                    <span>Blood Pressure</span>
+                      className="bg-gradient-to-r from-indigo-500 to-violet-500 h-2.5 rounded-full" 
+                      style={{ width: `${calculateCompletionRate()}%` }}
+                    ></div>
                   </div>
-                  <span className="font-medium">122/78 mmHg</span>
                 </div>
-                <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
-                      <Activity size={16} className="text-white" />
-                    </div>
-                    <span>Blood Glucose</span>
+                <div className="mb-6">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-gray-600">Diet plan compliance</span>
+                    <span className="font-medium">80%</span>
                   </div>
-                  <span className="font-medium">105 mg/dL</span>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div 
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full" 
+                      style={{ width: '80%' }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
-                      <Heart size={16} className="text-white" />
-                    </div>
-                    <span>Heart Rate</span>
+                <div className="mb-6">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-gray-600">Exercise goals</span>
+                    <span className="font-medium">65%</span>
                   </div>
-                  <span className="font-medium">72 bpm</span>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div 
+                      className="bg-gradient-to-r from-violet-500 to-purple-600 h-2.5 rounded-full" 
+                      style={{ width: '65%' }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
-                      <User size={16} className="text-white" />
-                    </div>
-                    <span>Weight</span>
+                <div className="text-center mt-4">
+                  <div className="inline-flex items-center text-indigo-600">
+                    <Award size={16} className="mr-1" />
+                    <span className="font-medium">3-day streak!</span>
                   </div>
-                  <span className="font-medium">168 lbs</span>
                 </div>
               </div>
               
-              <button className="mt-6 w-full bg-white text-indigo-700 hover:bg-indigo-50 py-3 px-4 rounded-xl transition-colors font-medium shadow-md flex items-center justify-center">
-                <Activity size={18} className="mr-2" />
-                View Full Health Report
-              </button>
+              {/* Upcoming Appointments */}
+              <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-indigo-100">
+                <h2 className="text-xl font-bold text-gray-800 mb-4">Upcoming Appointments</h2>
+                
+                {appointments.length > 0 ? (
+                  <div className="space-y-4">
+                    {appointments.map(appointment => (
+                      <div 
+                        key={appointment.id} 
+                        className="border border-gray-200 rounded-xl p-4 hover:border-indigo-300 hover:shadow-md transition-all duration-300"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-medium text-gray-800">{appointment.doctor}</h3>
+                            <p className="text-sm text-gray-500">{appointment.specialty}</p>
+                          </div>
+                          <div className="bg-indigo-100 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full">
+                            Upcoming
+                          </div>
+                        </div>
+                        <div className="mt-3 flex items-center text-gray-600">
+                          <div className="flex items-center mr-4">
+                            <Calendar size={14} className="mr-1" />
+                            <span className="text-sm">{appointment.date}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <Clock size={14} className="mr-1" />
+                            <span className="text-sm">{appointment.time}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500">No upcoming appointments.</p>
+                )}
+                
+                <button className="mt-4 w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-3 px-4 rounded-xl transition-colors font-medium flex items-center justify-center">
+                  <Calendar size={18} className="mr-2" />
+                  Schedule New Appointment
+                </button>
+              </div>
+              
+              {/* Health Stats Summary */}
+              <div className="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-2xl shadow-lg p-6 text-white">
+                <h2 className="text-xl font-bold mb-4">Health Summary</h2>
+                
+                <div className="space-y-4">
+                  <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                        <Activity size={16} className="text-white" />
+                      </div>
+                      <span>Blood Pressure</span>
+                    </div>
+                    <span className="font-medium">122/78 mmHg</span>
+                  </div>
+                  <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                        <Activity size={16} className="text-white" />
+                      </div>
+                      <span>Blood Glucose</span>
+                    </div>
+                    <span className="font-medium">105 mg/dL</span>
+                  </div>
+                  <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                        <Heart size={16} className="text-white" />
+                      </div>
+                      <span>Heart Rate</span>
+                    </div>
+                    <span className="font-medium">72 bpm</span>
+                  </div>
+                  <div className="bg-white bg-opacity-10 rounded-xl p-3 flex justify-between items-center">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center mr-3">
+                        <User size={16} className="text-white" />
+                      </div>
+                      <span>Weight</span>
+                    </div>
+                    <span className="font-medium">168 lbs</span>
+                  </div>
+                </div>
+                
+                <button className="mt-6 w-full bg-white text-indigo-700 hover:bg-indigo-50 py-3 px-4 rounded-xl transition-colors font-medium shadow-md flex items-center justify-center">
+                  <Activity size={18} className="mr-2" />
+                  View Full Health Report
+                </button>
+              </div>
             </div>
           </div>
         </div>

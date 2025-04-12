@@ -1,93 +1,73 @@
 "use client";
-import React from 'react';
-import { useState } from 'react';
-import { Calendar, Users, User, Settings, LogOut, Home, Menu, X } from 'lucide-react';
 
-interface DoctorSidebarProps {
-  onItemSelect?: (itemId: string) => void;
-  onLogout?: () => void;
-  defaultActiveItem?: string;
-}
+import React, { useState } from "react";
+import {
+  Calendar,
+  Users,
+  User,
+  Settings,
+  LogOut,
+  Home,
+  Menu,
+  X,
+} from "lucide-react";
 
-const DoctorSidebar: React.FC<DoctorSidebarProps> = ({
-  onItemSelect,
-  onLogout,
-  defaultActiveItem = 'dashboard',
-}) => {
+export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState(defaultActiveItem);
+  const [activeItem, setActiveItem] = useState("dashboard");
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const handleItemClick = (itemId: string) => {
-    setActiveItem(itemId);
-    if (onItemSelect) {
-      onItemSelect(itemId);
-    }
-  };
-
   const menuItems = [
-    { id: 'dashboard', icon: Home, label: 'Dashboard' },
-    { id: 'patients', icon: Users, label: 'My Patients' },
-    { id: 'calendar', icon: Calendar, label: 'Calendar' },
-    { id: 'profile', icon: User, label: 'My Profile' },
-    { id: 'settings', icon: Settings, label: 'Settings' },
+    { id: "dashboard", icon: Home, label: "Dashboard" },
+    { id: "patients", icon: Users, label: "My Patients" },
+    { id: "calendar", icon: Calendar, label: "Calendar" },
+    { id: "profile", icon: User, label: "My Profile" },
+    { id: "settings", icon: Settings, label: "Settings" },
   ];
 
   return (
     <div
-      className={`${
-        isCollapsed ? 'w-16' : 'w-64'
-      } h-screen bg-gradient-to-b from-indigo-700 via-blue-700 to-violet-700 text-white transition-all duration-300 ease-in-out flex flex-col justify-between shadow-lg`}
+      className={`bg-blue-700 text-white h-screen p-4 flex flex-col transition-all duration-300 ${
+        isCollapsed ? "w-20" : "w-64"
+      }`}
     >
       {/* Header */}
-      <div className="p-4 flex items-center justify-between">
-        {!isCollapsed && (
-          <div className="font-bold text-xl">MedPortal</div>
-        )}
-        <button
-          onClick={toggleSidebar}
-          className={`p-2 rounded-lg hover:bg-indigo-600 transition-colors ${isCollapsed ? 'mx-auto' : ''}`}
-        >
-          {isCollapsed ? <Menu size={20} /> : <X size={20} />}
+      <div className="flex items-center justify-between mb-6">
+        {!isCollapsed && <h1 className="text-xl font-bold">MedPortal</h1>}
+        <button onClick={toggleSidebar}>
+          {isCollapsed ? <Menu /> : <X />}
         </button>
       </div>
 
-      {/* Nav Items */}
-      <div className="flex-1 px-3 py-4">
-        <ul className="space-y-2">
-          {menuItems.map((item) => (
-            <li key={item.id}>
-              <button
-                onClick={() => handleItemClick(item.id)}
-                className={`flex items-center p-3 rounded-lg w-full transition-all duration-200 ${
-                  activeItem === item.id
-                    ? 'bg-white text-blue-700 font-medium shadow-md'
-                    : 'text-white hover:bg-blue-600'
-                }`}
-              >
-                <item.icon size={20} className={isCollapsed ? 'mx-auto' : 'mr-3'} />
-                {!isCollapsed && <span>{item.label}</span>}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Navigation Items */}
+      <nav className="flex flex-col gap-2 flex-grow">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveItem(item.id)}
+              className={`flex items-center gap-3 p-3 rounded-lg w-full transition-all duration-200 ${
+                activeItem === item.id
+                  ? "bg-white text-blue-700 font-medium shadow-md"
+                  : "text-white hover:bg-blue-600"
+              }`}
+            >
+              <Icon size={20} />
+              {!isCollapsed && <span>{item.label}</span>}
+            </button>
+          );
+        })}
+      </nav>
 
-      {/* Logout Button */}
-      <div className="p-4 border-t border-blue-800">
-        <button
-          onClick={onLogout}
-          className="flex items-center p-3 rounded-lg text-white hover:bg-blue-600 transition-colors w-full"
-        >
-          <LogOut size={20} className={isCollapsed ? 'mx-auto' : 'mr-3'} />
-          {!isCollapsed && <span>Logout</span>}
-        </button>
-      </div>
+      {/* Logout */}
+      <button className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-600 mt-auto">
+        <LogOut size={20} />
+        {!isCollapsed && <span>Logout</span>}
+      </button>
     </div>
   );
-};
-
-export default DoctorSidebar;
+}
