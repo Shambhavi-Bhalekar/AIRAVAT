@@ -28,7 +28,7 @@ export default function PatientSidebar() {
       {/* Header */}
       <div className="p-4 flex items-center justify-between">
         {!isCollapsed && (
-          <div className="font-bold text-xl">HealthCare</div>
+          <div className="font-bold text-xl">MediMitra</div>
         )}
         <button 
           onClick={toggleSidebar} 
