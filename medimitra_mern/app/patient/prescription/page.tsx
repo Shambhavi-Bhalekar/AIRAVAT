@@ -2,7 +2,7 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import PatientSidebar from '../../components/sidebar_patient';
-import { Upload, X, FileText, Image, AlertCircle, Search } from 'lucide-react';
+import { Upload, X, FileText, Image, AlertCircle, Search, AlertTriangle } from 'lucide-react';
 
 export default function SearchPrescriptionPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -11,6 +11,7 @@ export default function SearchPrescriptionPage() {
   const [allergies, setAllergies] = useState<string[]>([]);
   const [allergyInput, setAllergyInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [processingResults, setProcessingResults] = useState<null | {
     medications: string[];
     warnings: string[];
@@ -25,7 +26,15 @@ export default function SearchPrescriptionPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      
+      // Check if file type is supported
+      if (!file.type.startsWith('image/')) {
+        setError("Only image files (JPEG, PNG, GIF) are supported by our analysis system.");
+        return;
+      }
+      
       setUploadedFile(file);
+      setError(null);
       
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
@@ -59,7 +68,15 @@ export default function SearchPrescriptionPage() {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
+      
+      // Check if file type is supported
+      if (!file.type.startsWith('image/')) {
+        setError("Only image files (JPEG, PNG, GIF) are supported by our analysis system.");
+        return;
+      }
+      
       setUploadedFile(file);
+      setError(null);
       
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
@@ -74,25 +91,63 @@ export default function SearchPrescriptionPage() {
     }
   };
 
-  const handleProcessPrescription = () => {
+  const handleProcessPrescription = async () => {
     if (!uploadedFile) return;
     
     setIsProcessing(true);
+    setError(null);
     
-    // Simulate ML processing with a timeout
-    setTimeout(() => {
-      setIsProcessing(false);
-      setProcessingResults({
-        medications: ['Amoxicillin 500mg', 'Loratadine 10mg', 'Ibuprofen 400mg'],
-        warnings: allergies.includes('Penicillin') ? ['⚠ Allergy Alert: Amoxicillin contains penicillin'] : [],
+    // Create form data to send to the backend
+    const formData = new FormData();
+    formData.append('image', uploadedFile);
+    formData.append('allergies', allergies.join(', '));
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/extract_and_check', {
+        method: 'POST',
+        body: formData,
       });
-    }, 2000);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Error processing prescription');
+      }
+      
+      const data = await response.json();
+      
+      // Parse the Gemini API response
+      // The extracted medicines text might need parsing to get a clean array
+      const medicationText = data.extracted_medicines;
+      
+      // Simple parsing - assuming the response is a list of medicines
+      // This may need adjustment based on actual Gemini response format
+      const medicationsList = medicationText.split('\n')
+        .filter(line => line.trim().length > 0)
+        .map(line => line.replace(/^[-•]\s/, '').trim());
+      
+      // Check for warnings in the response
+      const warningsList = [];
+      if (data.allergy_check_result && !data.allergy_check_result.toLowerCase().includes('no likely allergic reactions')) {
+        warningsList.push(`⚠ ${data.allergy_check_result}`);
+      }
+      
+      setProcessingResults({
+        medications: medicationsList,
+        warnings: warningsList,
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to process the prescription');
+      setProcessingResults(null);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const clearFile = () => {
     setUploadedFile(null);
     setPreview(null);
     setProcessingResults(null);
+    setError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -108,7 +163,6 @@ export default function SearchPrescriptionPage() {
       {/* Main content area */}
       <div className="flex-1 overflow-auto">
         <main className="p-6 md:p-8 max-w-6xl mx-auto">
-        
           {/* Page header */}
           <div className="mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Search Prescription</h1>
@@ -116,6 +170,14 @@ export default function SearchPrescriptionPage() {
               Upload your prescription and we'll analyze it for you
             </p>
           </div>
+
+          {/* Error message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
+              <AlertTriangle size={20} className="text-red-600 mt-0.5 mr-3 flex-shrink-0" />
+              <p className="text-red-700">{error}</p>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Upload section */}
@@ -165,7 +227,7 @@ export default function SearchPrescriptionPage() {
                       <div className="flex flex-col items-center">
                         <FileText size={48} className="text-blue-600 mb-2" />
                         <p className="text-gray-700 font-medium">{uploadedFile.name}</p>
-                        <p className="text-sm text-gray-500 mt-1">PDF Document</p>
+                        <p className="text-sm text-gray-500 mt-1">Document</p>
                       </div>
                     )}
                   </div>
@@ -173,7 +235,7 @@ export default function SearchPrescriptionPage() {
                   <div className="flex flex-col items-center">
                     <Upload size={48} className="text-blue-700 mb-3" />
                     <p className="text-gray-700 font-medium">Click or drag file to upload</p>
-                    <p className="text-sm text-gray-500 mt-1">Supports JPG, PNG, and PDF files</p>
+                    <p className="text-sm text-gray-500 mt-1">Supports JPG, PNG, and GIF images</p>
                   </div>
                 )}
                 <input 
@@ -181,7 +243,7 @@ export default function SearchPrescriptionPage() {
                   ref={fileInputRef}
                   className="hidden" 
                   onChange={handleFileChange}
-                  accept="image/jpeg,image/png,application/pdf"
+                  accept="image/jpeg,image/png,image/gif"
                   aria-label="Upload prescription file"
                 />
               </div>
@@ -277,7 +339,7 @@ export default function SearchPrescriptionPage() {
                   </div>
                   
                   {/* Warnings section */}
-                  {processingResults.warnings.length > 0 && (
+                  {processingResults.warnings.length > 0 ? (
                     <div>
                       <h3 className="text-lg font-medium mb-3 text-gray-800 flex items-center">
                         <AlertCircle size={18} className="text-red-600 mr-2" />
@@ -285,11 +347,15 @@ export default function SearchPrescriptionPage() {
                       </h3>
                       <ul className="space-y-2">
                         {processingResults.warnings.map((warning, index) => (
-                          <li key={index} className="p-3 bg-red-50 text-red-800 rounded-lg">
+                          <li key={index} className="p-3 bg-red-50 text-red-800 rounded-lg whitespace-pre-line">
                             {warning}
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-green-50 text-green-800 rounded-lg">
+                      <p>✓ No potential allergic reactions detected with your medication.</p>
                     </div>
                   )}
                   

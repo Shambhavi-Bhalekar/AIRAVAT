@@ -62,12 +62,12 @@ export default function LifestylePlanner() {
   return (
     <div className="flex min-h-screen bg-blue-50">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg fixed top-0 left-0 h-full z-10">
-        <PatientSidebar />
+      <div className="sticky top-0 h-screen">
+                    <PatientSidebar />
       </div>
       
       {/* Main Content - with left margin to prevent overlap */}
-      <div className="flex-1 ml-64 p-8">
+      <div className="flex-1 mx-auto p-8">
         <div className="max-w-6xl mx-auto">
           <header className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h1 className="text-3xl font-bold text-blue-800">Personal Health & Lifestyle Planner</h1>

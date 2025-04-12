@@ -36,6 +36,7 @@ interface MedicationSectionProps {
 
 export default function PatientDashboard() {
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
   const patientName = "Alex Johnson";
   
   // Effect to update current time every minute
@@ -198,13 +199,13 @@ export default function PatientDashboard() {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Sidebar - Fixed on the left */}
-      <div className="w-64 bg-white shadow-lg fixed top-0 left-0 h-full z-10">
+      {/* Sidebar - Using the existing PatientSidebar component */}
+      <div className="sticky top-0 h-screen">
         <PatientSidebar />
       </div>
 
-      {/* Main Content - Pushed to the right */}
-      <div className="flex-1 ml-64 p-6">
+      {/* Main Content - Adjusts automatically with the sidebar */}
+      <div className="flex-1 p-6 transition-all duration-300">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-8 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl shadow-lg p-6 text-white">
