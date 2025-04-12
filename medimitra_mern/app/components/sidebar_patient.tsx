@@ -1,22 +1,25 @@
+'use client';
 import { useState } from 'react';
-import { Calendar, User, Home, Search, PhoneCall, Apple, AlertCircle, Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Calendar, User, Home, Search, PhoneCall, Apple, AlertCircle, Menu, X, BotIcon } from 'lucide-react';
 
 export default function PatientSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState('dashboard');
+  const pathname = usePathname(); // Get the current path
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   const menuItems = [
-    { id: 'dashboard', icon: Home, label: 'Dashboard' },
-    { id: 'profile', icon: User, label: 'My Profile' },
-    { id: 'calendar', icon: Calendar, label: 'Calendar' },
-    { id: 'connect', icon: PhoneCall, label: 'Connect with Doctor' },
-    { id: 'diet', icon: Apple, label: 'Plan My Diet' },
-    { id: 'prescriptions', icon: Search, label: 'Search Prescriptions' },
-    { id: 'emergency', icon: AlertCircle, label: 'Emergency' },
+    { id: 'dashboard', icon: Home, label: 'Dashboard', href: '/patient/dashboard' },
+    { id: 'profile', icon: User, label: 'My Profile', href: '/patient/patient-profile' },
+    { id: 'calendar', icon: Calendar, label: 'Calendar', href: '/patient/patient-calendar' },
+    { id: 'connect', icon: PhoneCall, label: 'Connect with Doctor', href: '/patient/connect-doctor' },
+    { id: 'diet', icon: Apple, label: 'Plan My Diet', href: '/patient/diet-suggestion' },
+    { id: 'prescriptions', icon: Search, label: 'Check my Prescriptions', href: '/patient/prescription' },
+    { id: 'ChatBot', icon: BotIcon, label: 'Stress Reliever Bot', href: '/patient/chatbot' },
   ];
 
   return (
@@ -58,22 +61,21 @@ export default function PatientSidebar() {
         <ul className="space-y-2">
           {menuItems.map((item) => (
             <li key={item.id}>
-              <button
-                onClick={() => setActiveItem(item.id)}
-                className={`flex items-center p-3 rounded-lg w-full transition-all duration-200 ${
-                  activeItem === item.id 
-                    ? 'bg-white text-indigo-600 font-medium shadow-md' 
-                    : 'text-white hover:bg-indigo-500'
-                } ${
-                  item.id === 'emergency' ? 'mt-4' : ''
-                }`}
-              >
-                <item.icon size={20} className={isCollapsed ? 'mx-auto' : 'mr-3'} />
-                {!isCollapsed && <span>{item.label}</span>}
-                {item.id === 'emergency' && !isCollapsed && (
-                  <span className="ml-auto bg-red-500 text-xs px-2 py-1 rounded-full">SOS</span>
-                )}
-              </button>
+              <Link href={item.href}>
+                <div
+                  className={`flex items-center p-3 rounded-lg w-full transition-all duration-200 cursor-pointer ${
+                    pathname.includes(item.href)
+                      ? 'bg-white text-indigo-600 font-medium shadow-md'
+                      : 'text-white hover:bg-indigo-500'
+                  } ${item.id === 'emergency' ? 'mt-4' : ''}`}
+                >
+                  <item.icon size={20} className={isCollapsed ? 'mx-auto' : 'mr-3'} />
+                  {!isCollapsed && <span>{item.label}</span>}
+                  {item.id === 'emergency' && !isCollapsed && (
+                    <span className="ml-auto bg-red-500 text-xs px-2 py-1 rounded-full">SOS</span>
+                  )}
+                </div>
+              </Link>
             </li>
           ))}
         </ul>

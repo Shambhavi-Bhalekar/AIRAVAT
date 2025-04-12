@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Calendar, Clock, Plus, Home, User, Phone, FileText, Search, AlertCircle } from "lucide-react";
-import SidebarPatient from "../components/sidebar_patient"; // Adjusted the import path to the correct location
+import SidebarPatient from "../../components/sidebar_patient"; // Adjusted the import path to the correct location
 
 
 

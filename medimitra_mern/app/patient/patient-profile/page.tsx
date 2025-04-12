@@ -2,6 +2,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { PlusCircle, Upload, Save, X, FileText } from 'lucide-react';
+import PatientSidebar from '../../components/sidebar_patient';
 
 export default function PatientDetailsForm() {
   const [patientData, setPatientData] = useState({
@@ -146,6 +147,10 @@ export default function PatientDetailsForm() {
 
   return (
     <div className="min-h-screen bg-blue-50 p-8">
+      <div className="w-64 bg-white shadow-lg fixed top-0 left-0 h-full z-10">
+              
+                <PatientSidebar />
+              </div>
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold text-blue-800 mb-6">Patient Information</h1>
         

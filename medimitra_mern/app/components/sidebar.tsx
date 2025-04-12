@@ -1,6 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   Calendar,
   Users,
@@ -10,28 +12,29 @@ import {
   Home,
   Menu,
   X,
-} from "lucide-react";
+  Camera,
+} from 'lucide-react';
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState("dashboard");
+  const pathname = usePathname(); // Get current route
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   const menuItems = [
-    { id: "dashboard", icon: Home, label: "Dashboard" },
-    { id: "patients", icon: Users, label: "My Patients" },
-    { id: "calendar", icon: Calendar, label: "Calendar" },
-    { id: "profile", icon: User, label: "My Profile" },
-
+    { id: 'dashboard', icon: Home, label: 'Dashboard', href: '/dashboard-doctor' },
+    { id: 'patients', icon: Users, label: 'My Patients', href: '/doctor-MyPatients' },
+    { id: 'calendar', icon: Calendar, label: 'Calendar', href: '/doctor-calendar' },
+    { id: 'profile', icon: User, label: 'My Profile', href: '/doctor_MyProfile' },
+    { id: 'start-meeting', icon: Camera, label: 'Start a Meeting', href: '/doctor-meeting' },
   ];
 
   return (
     <div
       className={`bg-blue-700 text-white h-screen p-4 flex flex-col transition-all duration-300 ${
-        isCollapsed ? "w-20" : "w-64"
+        isCollapsed ? 'w-20' : 'w-64'
       }`}
     >
       {/* Header */}
@@ -47,18 +50,18 @@ export default function Sidebar() {
         {menuItems.map((item) => {
           const Icon = item.icon;
           return (
-            <button
-              key={item.id}
-              onClick={() => setActiveItem(item.id)}
-              className={`flex items-center gap-3 p-3 rounded-lg w-full transition-all duration-200 ${
-                activeItem === item.id
-                  ? "bg-white text-blue-700 font-medium shadow-md"
-                  : "text-white hover:bg-blue-600"
-              }`}
-            >
-              <Icon size={20} />
-              {!isCollapsed && <span>{item.label}</span>}
-            </button>
+            <Link key={item.id} href={item.href}>
+              <div
+                className={`flex items-center gap-3 p-3 rounded-lg w-full transition-all duration-200 cursor-pointer ${
+                  pathname.includes(item.href)
+                    ? 'bg-white text-blue-700 font-medium shadow-md'
+                    : 'text-white hover:bg-blue-600'
+                }`}
+              >
+                <Icon size={20} />
+                {!isCollapsed && <span>{item.label}</span>}
+              </div>
+            </Link>
           );
         })}
       </nav>

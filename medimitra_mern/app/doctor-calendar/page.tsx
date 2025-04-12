@@ -87,7 +87,7 @@ export default function CalendarPage() {
             </div>
 
             {showEventForm && (
-              <div className="absolute right-4 top-40 bg-white shadow-lg rounded-lg p-4 z-10 border border-gray-300 w-80 max-w-[90vw]">
+              <div className="absolute right-4 top-40 bg-white shadow-lg rounded-lg p-4 z-50 border border-gray-300 w-80 max-w-[90vw]">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <Plus className="w-4 h-4" />
                   Add New Event

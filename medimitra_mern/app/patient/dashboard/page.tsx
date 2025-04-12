@@ -2,7 +2,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, Check, X, AlertCircle, Coffee, Sun, Sunset, Moon, Activity, Heart, User, Award, Apple } from 'lucide-react';
-import PatientSidebar from '../components/sidebar_patient';
+import PatientSidebar from '../../components/sidebar_patient';
 
 interface Appointment {
   id: number;
