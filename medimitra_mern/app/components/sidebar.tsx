@@ -25,7 +25,7 @@ export default function Sidebar() {
     { id: "patients", icon: Users, label: "My Patients" },
     { id: "calendar", icon: Calendar, label: "Calendar" },
     { id: "profile", icon: User, label: "My Profile" },
-    { id: "settings", icon: Settings, label: "Settings" },
+
   ];
 
   return (
