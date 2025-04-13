@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/bhale/OneDrive/Desktop/git%20file/AIRAVAT/AIRAVAT-master/AIRAVAT-master/Nexural-Nexus_trial%202/app/page.tsx"],"sourcesContent":["\"use client\";\n\nimport { useEffect } from \"react\";\nimport { useRouter } from \"next/navigation\";\n\nexport default function Home() {\n  const router = useRouter();\n  return (\n    useEffect(() => {\n      router.push(\"/landingpage\"); // replace with your actual login route\n    }, [router])\n\n  );\n}\n"],"names":[],"mappings":";;;AAEA;AACA;;AAHA;;;AAKe,SAAS;;IACtB,MAAM,SAAS,CAAA,GAAA,qIAAA,CAAA,YAAS,AAAD;IACvB,OACE,CAAA,GAAA,6JAAA,CAAA,YAAS,AAAD;0BAAE;YACR,OAAO,IAAI,CAAC,iBAAiB,uCAAuC;QACtE;yBAAG;QAAC;KAAO;AAGf;GARwB;;QACP,qIAAA,CAAA,YAAS;;;KADF","debugId":null}},
+    {"offset": {"line": 43, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/bhale/OneDrive/Desktop/git%20file/AIRAVAT/AIRAVAT-master/AIRAVAT-master/Nexural-Nexus_trial%202/node_modules/next/navigation.js"],"sourcesContent":["module.exports = require('./dist/client/components/navigation')\n"],"names":[],"mappings":"AAAA,OAAO,OAAO","ignoreList":[0],"debugId":null}}]
+}

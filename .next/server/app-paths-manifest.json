@@ -1,0 +1,14 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/landingpage/page": "app/landingpage/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/patient/chatbot/page": "app/patient/chatbot/page.js",
+  "/patient/connect-doctor/page": "app/patient/connect-doctor/page.js",
+  "/patient/dashboard/page": "app/patient/dashboard/page.js",
+  "/patient/diet-suggestion/page": "app/patient/diet-suggestion/page.js",
+  "/patient/patient-calendar/page": "app/patient/patient-calendar/page.js",
+  "/patient/patient-profile/page": "app/patient/patient-profile/page.js",
+  "/patient/prescription/page": "app/patient/prescription/page.js"
+}

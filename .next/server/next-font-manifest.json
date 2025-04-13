@@ -1,0 +1,51 @@
+{
+  "app": {
+    "[project]/app/_not-found/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/landingpage/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/login/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/patient/chatbot/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/patient/connect-doctor/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/patient/dashboard/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/patient/diet-suggestion/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/patient/patient-calendar/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/patient/patient-profile/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ],
+    "[project]/app/patient/prescription/page": [
+      "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
+      "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}
